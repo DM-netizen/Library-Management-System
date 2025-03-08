@@ -1,0 +1,15 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Book ID {{book_id}}
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h3>Title: {{title}}</h3>
+    <h3>Author: {{author}}</h3>
+    <h3>Genre: {{genre}}</h3>
+    <h3>Rating: {{rating}}</h3>
+  </div>
+{% endblock %}

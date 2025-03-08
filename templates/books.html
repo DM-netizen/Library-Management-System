@@ -1,0 +1,36 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Add books
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form class="form-signin" method="POST" action="/books">
+            <div style="color: red;">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for msg in messages %}
+                            <p>{{msg}}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <p style="color: red;position: relative;"><b>{{error}}</b></p> 
+            <h2 class="form-signin-heading">Add a book</h2>
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.title) }}
+            {{ wtf.form_field(form.author) }}
+            {{ wtf.form_field(form.genre) }}
+            {{ wtf.form_field(form.rating) }}
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Add</button>
+        </form>
+
+    </div> <!-- /container -->
+{% endblock %}

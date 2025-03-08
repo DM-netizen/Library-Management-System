@@ -1,0 +1,88 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Browse Books
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
+{% endblock %}
+
+{% block content %}
+    <style>
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <div class="container">
+        <form class="form-signin" method="POST" action="/browse">
+            <div style="color: red;">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for msg in messages %}
+                            <p>{{msg}}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <p style="color: red;position: relative;"><b>{{error}}</b></p> 
+            <h2 class="form-signin-heading">Apply Filters</h2>
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.page)}}
+            {{ wtf.form_field(form.limit) }}
+            {{ wtf.form_field(form.genre) }}
+            {{ wtf.form_field(form.rating) }}
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Filter</button>
+        </form>
+        {% print(books_query.page) %}
+        <h2 style="text-align:center;">Books List</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Rating</th> 
+            </tr>
+            <!-- books = books_query.items
+        total_pages = books_query.pages
+        current_page = books_query.page
+        print(current_page)
+        print(total_pages)
+        if current_page > total_pages:
+            flash("Page not found!")
+            return redirect(url_for('browse')) -->
+            {% for book in books_query.items %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.genre }}</td>
+                <td>{{ book.rating }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% if books_query.page != books_query.pages and books_query.page>1 %}
+            <button class = "btn btn-lg btn-primary btn-block" href="{{url_for('browse',page=books_query.next_num)}}">Next</button>
+            <button class = "btn btn-lg btn-primary btn-block" href="{{url_for('browse',page=books_query.prev_num)}}">Previous</button>
+        {% endif %}
+        {% if books_query.page==1 %}
+            <button class = "btn btn-lg btn-primary btn-block" href="{{url_for('browse',page=books_query.next_num)}}">Next</button>
+        {% endif %}
+        {% if books_query.page == books_query.pages %}
+            <button class = "btn btn-lg btn-primary btn-block" href="{{url_for('browse',page=books_query.prev_num)}}">Previous</button>
+        {% endif %}
+
+{% endblock %}
