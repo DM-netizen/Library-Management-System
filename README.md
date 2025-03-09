@@ -66,9 +66,3 @@ Ensure you have the following installed:
 - **Frontend**: HTML, CSS, JavaScript
 - **Authentication**: JWT or OAuth
 
-## License
-This project is licensed under the MIT License.
-
----
-Happy Coding! 🚀
-
